@@ -10,7 +10,4 @@ describe('Test with backend', () => {
     cy.log('Yeeeey we logged in!')
   })
 
-
-
-
 })
