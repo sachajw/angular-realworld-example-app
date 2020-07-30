@@ -27,7 +27,7 @@
 
 Cypress.Commands.add('loginToApplication', () => {
   cy.visit('http://localhost:4200/login')
-  cy.get('[placeholder="Email"]').type('artem.bondar16@gmail.com')
-  cy.get('[placeholder="Password"]').type('CyrpessTest1')
+  cy.get('[placeholder="Email"]').type('sacha.wharton16@gmail.com')
+  cy.get('[placeholder="Password"]').type('CypressTest1')
   cy.get('form').submit()
 })
