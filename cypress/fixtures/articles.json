@@ -1,0 +1,39 @@
+{
+    "articles": [
+      {
+        "title": "Article Test",
+        "slug": "article-test-3pgyi1",
+        "body": "Write Article Test",
+        "createdAt": "2020-07-30T15:44:37.471Z",
+        "updatedAt": "2020-07-30T15:44:37.471Z",
+        "tagList": [],
+        "description": "Article About Test",
+        "author": {
+          "username": "Nirvaan ",
+          "bio": null,
+          "image": "https://static.productionready.io/images/smiley-cyrus.jpg",
+          "following": false
+        },
+        "favorited": false,
+        "favoritesCount": 0
+    },
+    {
+      "title": "This is a title",
+      "slug": "this-is-a-title-ylpmct",
+      "body": "This is a body of the Article",
+      "createdAt": "2020-07-30T15:42:12.924Z",
+      "updatedAt": "2020-07-30T15:42:12.924Z",
+      "tagList": [],
+      "description": "This is a description",
+      "author": {
+        "username": "vfurmantest",
+        "bio": null,
+        "image": "https://static.productionready.io/images/smiley-cyrus.jpg",
+        "following": false
+        },
+        "favorited": false,
+        "favoritesCount": 0
+    },
+    {
+    "articlesCount": 500
+}
