@@ -15,7 +15,7 @@
           "following": false
         },
         "favorited": false,
-        "favoritesCount": 0
+        "favoritesCount": 1
     },
     {
       "title": "This is a title",
@@ -32,7 +32,7 @@
         "following": false
         },
         "favorited": false,
-        "favoritesCount": 0
+        "favoritesCount": 5
     },
     {
     "articlesCount": 500

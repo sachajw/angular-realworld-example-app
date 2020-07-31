@@ -9,9 +9,9 @@ describe('Test with backend', () => {
     cy.loginToApplication()
   })
 
-  it('should log in', () => {
-    cy.log('Yeeeey we logged in!')
-  })
+//  it('should log in', () => {
+//    cy.log('Yeeeey we logged in!')
+//  })
 
   it('verify correct request and respons', () => {
 
@@ -46,8 +46,26 @@ describe('Test with backend', () => {
 
   it('verify global feed likes count', () => {
 
-    cy.route('GET', '**/articles*','{"articles":[],"articlesCount":0}')
-    cy.route('GET', '**/articles*','fixture:articles.json')
+    cy.route('GET', '**/articles/feed*','{"articles":[],"articlesCount":0}')
+    cy.route('GET', '**/articles*','fixture:articles2.json')
+
+    cy.contains('Global Feed').click()
+    cy.get('app-article-list button').then(listOfbuttons => {
+      expect(listOfbuttons[0]).to.contain('1')
+      expect(listOfbuttons[0]).to.contain('5')
+
+    })
+
+    cy.fixture('articles').then(file => {
+      const articleLink = file.articles[1].slug
+      cy.route('POST','**/articles/'+articleLink+'/favorite', file)
+    })
+
+    cy.get('app-article-list button')
+    .eq(1)
+    .click()
+    .should('contain','6')
+
   })
 
 })
