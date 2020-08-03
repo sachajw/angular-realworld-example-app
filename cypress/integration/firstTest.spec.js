@@ -5,19 +5,19 @@ describe('Test with backend', () => {
   beforeEach('login to the app', () => {
     cy.server()
     //adding fixtures
-    cy.route('GET', '**/tags','fixture:tags.json')
+    cy.route('GET', '**/tags', 'fixture:tags.json')
     cy.loginToApplication()
   })
 
-//  it('should log in', () => {
-//    cy.log('Yeeeey we logged in!')
-//  })
+  //  it('should log in', () => {
+  //    cy.log('Yeeeey we logged in!')
+  //  })
 
-  it('verify correct request and respons', () => {
+  it('verify correct request and response', () => {
 
     cy.server()
     //listens on all api calls and alias is postArticles
-    cy.route('POST','**/articles').as('postArticles')
+    cy.route('POST', '**/articles').as('postArticles')
 
     cy.contains('New Article').click()
     cy.get('[formcontrolname="title"]').type('This is a title')
@@ -39,33 +39,87 @@ describe('Test with backend', () => {
 
   it('should give the tags with the routing object', () => {
     cy.get('.tag-list')
-    .should('contain','cypress')
-    .and('contain','automation')
-    .and('contain','testing')
+      .should('contain', 'cypress')
+      .and('contain', 'automation')
+      .and('contain', 'testing')
   })
 
   it('verify global feed likes count', () => {
 
-    cy.route('GET', '**/articles/feed*','{"articles":[],"articlesCount":0}')
-    cy.route('GET', '**/articles*','fixture:articles2.json')
+    cy.route('GET', '**/articles/feed*', '{"articles":[],"articlesCount":0}')
+    cy.route('GET', '**/articles*', 'fixture:articles2.json')
 
     cy.contains('Global Feed').click()
     cy.get('app-article-list button').then(listOfbuttons => {
       expect(listOfbuttons[0]).to.contain('1')
-      expect(listOfbuttons[0]).to.contain('5')
+      expect(listOfbuttons[1]).to.contain('5')
 
     })
 
     cy.fixture('articles').then(file => {
       const articleLink = file.articles[1].slug
-      cy.route('POST','**/articles/'+articleLink+'/favorite', file)
+      cy.route('POST', '**/articles/' + articleLink + '/favorite', file)
     })
 
     cy.get('app-article-list button')
-    .eq(1)
-    .click()
-    .should('contain','6')
+      .eq(1)
+      .click()
+      .should('contain', '6')
 
   })
+
+  it.only('delete a new article in a global feed', () => {
+
+    const userCredentials = {
+      "user": {
+        "email": "sacha.wharton16@gmail.com",
+        "password": "CypressTest1"
+      }
+    }
+
+    const bodyRequest = {
+      "article": {
+        "tagList": [],
+        "title": "Request from API?",
+        "description": "API testing is easy",
+        "body": "Angular is cool"
+      }
+    }
+
+    // API request to get the token
+    cy.request('POST', 'https://conduit.productionready.io/api/users/login', userCredentials)
+      .its('body').then(body => {
+        const token = body.user.token
+
+        cy.request({
+          url: 'https://conduit.productionready.io/api/articles/',
+          headers: {'Authorization': 'Token '+token},
+          method: 'POST',
+          body: bodyRequest
+        }).then(response => {
+          expect(response.status).to.equal(200)
+        })
+
+        cy.contains('Global Feed').click()
+        cy.get('.article-preview').first().click()
+        cy.get('article-actions').contains('Delete Article').click()
+
+        cy.request({
+          url: 'https://conduit.productionready.io/api/articles?limit=10&offset=0',
+          headers: {
+            'Authorization': 'Token ' + token
+          },
+          method: 'GET'
+        }).its('body').then(body => {
+          expect(body.articles[0].title).not.to.equal('Request from API')
+
+        })
+
+      })
+
+
+  })
+
+
 
 })
