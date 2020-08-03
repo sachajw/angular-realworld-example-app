@@ -10,7 +10,7 @@
   },
   "env": {
     "RETRIES": 2,
-    "username": "artem.bondar16@gmail.com",
+    "username": "sacha.wharton16@gmail.com",
     "password": "CypressTest1",
     "apiUrl": "https://conduit.productionready.io/"
   }
